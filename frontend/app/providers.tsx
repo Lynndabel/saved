@@ -6,28 +6,29 @@ import { WagmiProvider, createConfig, http } from "wagmi";
 import { celo, celoAlfajores } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { injected, walletConnect } from "@wagmi/connectors";
+import { useState } from "react";
 
-// If you want WalletConnect/Coinbase later, add them back and install their SDKs.
+// WalletConnect project ID must be provided via env
+const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID;
+if (!projectId) {
+  throw new Error("NEXT_PUBLIC_WC_PROJECT_ID is required for WalletConnect");
+}
 
 // Explicit connector list without Base smart account
 const config = createConfig({
   chains: [celoAlfajores, celo],
   connectors: [
     injected({ shimDisconnect: true }),
-    walletConnect({
-      projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || "demo",
-      showQrModal: true,
-    }),
+    walletConnect({ projectId, showQrModal: true }),
   ],
   transports: {
-    [celoAlfajores.id]: http(),
-    [celo.id]: http(),
+    [celoAlfajores.id]: http(process.env.NEXT_PUBLIC_ALFAJORES_RPC_URL),
+    [celo.id]: http(process.env.NEXT_PUBLIC_CELO_RPC_URL),
   },
 });
 
-const queryClient = new QueryClient();
-
 export default function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

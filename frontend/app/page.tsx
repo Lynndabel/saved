@@ -2,12 +2,13 @@
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useChainId } from "wagmi";
-import { celoAlfajores } from "wagmi/chains";
+import { celo, celoAlfajores } from "wagmi/chains";
 
 export default function Home() {
   const { isConnected } = useAccount();
   const chainId = useChainId();
-  const onAlfajores = chainId === celoAlfajores.id;
+  const onSupportedChain =
+    typeof chainId === "number" && (chainId === celoAlfajores.id || chainId === celo.id);
 
   return (
     <main className="min-h-screen p-6 sm:p-10">
@@ -19,11 +20,11 @@ export default function Home() {
       <section className="mt-8">
         {!isConnected ? (
           <p className="text-gray-600">Connect your wallet to get started.</p>
-        ) : !onAlfajores ? (
-          <p className="text-amber-600">Please switch to Celo Alfajores.</p>
+        ) : !onSupportedChain ? (
+          <p className="text-amber-600">Please switch to Celo or Celo Alfajores.</p>
         ) : (
           <div className="space-y-2">
-            <p className="text-gray-800">Welcome. You are connected on Alfajores.</p>
+            <p className="text-gray-800">Welcome. You are connected on a supported Celo network.</p>
             <ul className="list-disc pl-6 text-gray-700">
               <li>Create or join a circle</li>
               <li>Contribute cUSD each cycle</li>

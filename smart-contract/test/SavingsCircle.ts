@@ -73,6 +73,7 @@ describe("SavingsCircle", async () => {
     await circle.write.contribute([], { account: memberA.account });
 
     await circle.write.skipMissedContribution([memberB.account.address], { account: creator.account });
+    await mockToken.write.mint([circle.address, contribution], { account: creator.account });
 
     const balanceBefore = await mockToken.read.balanceOf([memberA.account.address]);
     await circle.write.triggerPayout([], { account: memberA.account });

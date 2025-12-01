@@ -41,9 +41,13 @@ describe("SavingsCircle", async () => {
 
     await circle.write.joinCircle([selfIdRef], { account: memberA.account });
 
-    const req = await circle.read.membershipRequests([memberA.account.address]);
-    assert.equal(req.exists, true);
-    assert.equal(req.approved, false);
+    const membership = (await circle.read.membershipRequests([memberA.account.address])) as {
+      selfIdRef: string;
+      exists: boolean;
+      approved: boolean;
+    };
+    assert.equal(membership.exists, true);
+    assert.equal(membership.approved, false);
 
     const attestationRef = padHex("0x123", { size: 32 });
     await circle.write.attestMembership([memberA.account.address, attestationRef], {
@@ -82,7 +86,7 @@ describe("SavingsCircle", async () => {
 
     const repA = await circle.read.reputation([memberA.account.address]);
     const repB = await circle.read.reputation([memberB.account.address]);
-    assert.equal(repA > 0, true);
-    assert.equal(repB < 0, true);
+    assert.equal(repA, 4n);
+    assert.equal(repB, -1n);
   });
 });

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
 
 import { network } from "hardhat";
+import { padHex } from "viem";
 
 describe("SavingsCircle", async () => {
   const { viem } = await network.connect();
@@ -36,7 +37,7 @@ describe("SavingsCircle", async () => {
   });
 
   it("allows membership request + attestation flow", async () => {
-    const selfIdRef = "0xabc" as const;
+    const selfIdRef = padHex("0xabc", { size: 32 });
 
     await circle.write.joinCircle([selfIdRef], { account: memberA.account });
 
@@ -44,7 +45,7 @@ describe("SavingsCircle", async () => {
     assert.equal(req.exists, true);
     assert.equal(req.approved, false);
 
-    const attestationRef = "0x123" as const;
+    const attestationRef = padHex("0x123", { size: 32 });
     await circle.write.attestMembership([memberA.account.address, attestationRef], {
       account: creator.account,
     });
@@ -56,13 +57,17 @@ describe("SavingsCircle", async () => {
   });
 
   it("handles contribution, skip-missed, payout, and reputation", async () => {
-    const selfIdA = "0xaaa" as const;
-    const selfIdB = "0xbbb" as const;
+    const selfIdA = padHex("0xaaa", { size: 32 });
+    const selfIdB = padHex("0xbbb", { size: 32 });
 
     await circle.write.joinCircle([selfIdA], { account: memberA.account });
     await circle.write.joinCircle([selfIdB], { account: memberB.account });
-    await circle.write.attestMembership([memberA.account.address, "0x11"], { account: creator.account });
-    await circle.write.attestMembership([memberB.account.address, "0x22"], { account: creator.account });
+    await circle.write.attestMembership([memberA.account.address, padHex("0x11", { size: 32 })], {
+      account: creator.account,
+    });
+    await circle.write.attestMembership([memberB.account.address, padHex("0x22", { size: 32 })], {
+      account: creator.account,
+    });
 
     await mockToken.write.approve([circle.address, contribution], { account: memberA.account });
     await circle.write.contribute([], { account: memberA.account });

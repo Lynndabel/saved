@@ -51,34 +51,34 @@ A decentralized savings circle platform built on Celo using cUSD, integrated wit
 - [ ] Add environment management (`.env.local`, `.env.example`).
 
 ### Contracts (packages/contracts)
-- [ ] Dependencies: `hardhat`, `@openzeppelin/contracts`, `dotenv`, `viem`, `typescript`.
-- [ ] Interfaces:
-  - [ ] `IERC20` for cUSD
+- [x] Dependencies: `hardhat`, `@openzeppelin/contracts`, `dotenv`, `viem`, `typescript`.
+- [x] Interfaces:
+  - [x] `IERC20` for cUSD
 - [ ] SavingsCircleFactory.sol
-  - [ ] `createCircle(params)` deploys new `SavingsCircle`
-  - [ ] Emit `CircleCreated(circle, creator, params)`
-  - [ ] Registry mapping for discoverability
+  - [x] `createCircle(params)` deploys new `SavingsCircle`
+  - [x] Emit `CircleCreated(circle, creator, params)`
+  - [x] Registry mapping for discoverability
 - [ ] SavingsCircle.sol
   - State:
-    - [ ] `address[] members`, `mapping(address => uint256) memberIndex`
-    - [ ] `mapping(uint256 => mapping(address => bool)) paid`
-    - [ ] `uint256 contributionAmount`, `uint256 cycleLength`, `uint256 currentCycle`, `uint256 currentDueIndex`
-    - [ ] `address cUSD`, `address creator`
-    - [ ] `uint256[] payoutOrder`
-    - [ ] `mapping(address => int256) reputation`
+    - [x] `address[] members`, `mapping(address => uint256) memberIndex`
+    - [x] `mapping(uint256 => mapping(address => bool)) paid`
+    - [x] `uint256 contributionAmount`, `uint256 cycleLength`, `uint256 currentCycle`, `uint256 currentDueIndex`
+    - [x] `address cUSD`, `address creator`
+    - [x] `uint256[] payoutOrder`
+    - [x] `mapping(address => int256) reputation`
   - Functions:
-    - [ ] `constructor(params)`
-    - [ ] `joinCircle(selfIdRef)` with membership gating
-    - [ ] `attestMembership(selfIdRefHash)` (creator-only) [MVP: event log + off-chain Self attestation]
-    - [ ] `contribute()` pulls cUSD (after user approve), marks `paid`
-    - [ ] `triggerPayout()` checks due member and transfers pooled cUSD; incentive to caller
-    - [ ] `skipMissedContribution(member)` marks missed after grace window
-    - [ ] `updateReputation(member, delta)` internal hooks
-    - [ ] `getStatus()` view for UI
+    - [x] `constructor(params)`
+    - [x] `joinCircle(selfIdRef)` with membership gating
+    - [x] `attestMembership(selfIdRefHash)` (creator-only) [MVP: event log + off-chain Self attestation]
+    - [x] `contribute()` pulls cUSD (after user approve), marks `paid`
+    - [x] `triggerPayout()` checks due member and transfers pooled cUSD; incentive to caller
+    - [x] `skipMissedContribution(member)` marks missed after grace window
+    - [x] `updateReputation(member, delta)` internal hooks
+    - [x] `getStatus()` view for UI
   - Events:
-    - [ ] `Joined(member)`, `Contributed(member, cycle, amount)`, `Payout(to, cycle, amount)`, `Missed(member, cycle)`, `ReputationUpdated(member, delta, score)`
-- [ ] Security & Constraints:
-  - [ ] Reentrancy guards, caps (max members), safe math by default (0.8+), onlyCreator modifiers, pause if needed
+    - [x] `Joined(member)`, `Contributed(member, cycle, amount)`, `Payout(to, cycle, amount)`, `Missed(member, cycle)`, `ReputationUpdated(member, delta, score)`
+- [x] Security & Constraints:
+  - [x] Reentrancy guards, caps (max members), safe math by default (0.8+), onlyCreator modifiers, pause if needed
 - [ ] Tests:
   - [ ] Factory creation
   - [ ] Joining rules and gating

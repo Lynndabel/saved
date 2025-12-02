@@ -35,11 +35,11 @@ export default defineConfig({
       accounts: [configVariable("SEPOLIA_PRIVATE_KEY")],
     },
     celo: {
-     type: "http",
-     chainType: "l1",
-     url: process.env.CELO_MAINNET_RPC_URL!,
-     accounts: [process.env.PRIVATE_KEY_DEPLOYER!],
-     chainId: 42220,
+      type: "http",
+      chainType: "l1",
+      url: configVariable("CELO_MAINNET_RPC_URL"),
+      accounts: [configVariable("CELO_MAINNET_PRIVATE_KEY")],
+      chainId: 42220,
     },
   },
 });

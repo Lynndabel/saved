@@ -1,5 +1,9 @@
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
 import { configVariable, defineConfig } from "hardhat/config";
+import * as dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 export default defineConfig({
   plugins: [hardhatToolboxViemPlugin],
@@ -39,6 +43,12 @@ export default defineConfig({
       chainType: "l1",
       url: configVariable("ALFAJORES_RPC_URL"),
       accounts: [configVariable("ALFAJORES_PRIVATE_KEY")],
+    },
+    celo: {
+      type: "http",
+      chainType: "l1",
+      url: process.env.CELO_RPC_URL || "https://forno.celo.org",
+      accounts: process.env.CELO_PRIVATE_KEY ? [process.env.CELO_PRIVATE_KEY] : [],
     },
   },
 });

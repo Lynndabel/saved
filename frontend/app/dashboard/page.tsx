@@ -22,24 +22,11 @@ const summarySkeleton: SummaryMetric[] = [
   { label: "On-time streak", value: "11 cycles", caption: "Past 90 days" },
 ];
 
-const activityFeed: ActivityItem[] = [
-  { title: "Ama contributed 75 cUSD", subtitle: "Market Queens • Cycle 4", timestamp: "2m ago", accent: "#22d3ee" },
-  { title: "Missed payment flagged", subtitle: "Campus Builders • Ada", timestamp: "14m ago", accent: "#facc15" },
-  { title: "Payout triggered", subtitle: "Diaspora Connect • Kweku", timestamp: "1h ago", accent: "#34d399" },
-];
-
-const contributionRows: ContributionEntry[] = [
-  { member: "Ama", circle: "Market Queens", cycle: "4", amount: "75 cUSD", status: "On time" },
-  { member: "Ada", circle: "Campus Builders", cycle: "3", amount: "40 cUSD", status: "Pending" },
-  { member: "Gbenga", circle: "Diaspora Connect", cycle: "8", amount: "120 cUSD", status: "On time" },
-  { member: "Ngozi", circle: "Market Queens", cycle: "4", amount: "75 cUSD", status: "Missed" },
-];
-
 export default function DashboardPage() {
   const { isConnected } = useAccount();
   const chainId = useChainId();
   const onCeloMainnet = typeof chainId === "number" && chainId === celo.id;
-  const { circles, aggregate, isLoading, isError, refetch } = useCirclesData();
+  const { circles, aggregate, activities, contributions, isLoading, isError, refetch } = useCirclesData();
 
   const summaryMetrics: SummaryMetric[] = [
     {
@@ -110,8 +97,8 @@ export default function DashboardPage() {
         )}
 
         <section className="grid gap-6 lg:grid-cols-[0.6fr_0.4fr]">
-          <ContributionTable rows={contributionRows} />
-          <ActivityTimeline items={activityFeed} />
+          <ContributionTable rows={contributions as ContributionEntry[]} />
+          <ActivityTimeline items={activities as ActivityItem[]} />
         </section>
       </div>
     </main>

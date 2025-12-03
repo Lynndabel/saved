@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAccount, useChainId } from "wagmi";
 import { celo } from "wagmi/chains";
+import { motion } from "framer-motion";
+import { AppKitButton } from "@reown/appkit/react";
+import { Zap, LogOut } from "lucide-react";
 
 import {
   ActionButton,
@@ -43,72 +46,118 @@ export default function DashboardPage() {
 
   if (!isConnected || !onCeloMainnet) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-950 p-6 text-center text-white">
-        <div className="space-y-4">
-          <p className="text-2xl font-semibold">Connect on Celo mainnet to view your dashboard</p>
-          <p className="text-sm text-slate-300">Use the landing page connect button, then return here.</p>
-          <Link href="/" className="text-cyan-300 underline">
-            Go back to landing page
-          </Link>
-        </div>
-      </main>
+      <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
+        <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.15),_transparent_55%)]" />
+        <motion.nav
+          className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-md"
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-emerald-400">
+                <Zap className="h-5 w-5 text-slate-950" />
+              </div>
+              <span className="text-lg font-bold text-white">Ajo</span>
+            </Link>
+            <AppKitButton />
+          </div>
+        </motion.nav>
+        <main className="relative z-10 flex min-h-screen items-center justify-center p-6 text-center">
+          <div className="space-y-4">
+            <p className="text-2xl font-semibold">Connect on Celo to access your dashboard</p>
+            <p className="text-sm text-slate-300">Use the connect button above, then return here.</p>
+            <Link href="/" className="inline-block text-cyan-300 underline">
+              Go back to landing page
+            </Link>
+          </div>
+        </main>
+      </div>
     );
   }
 
   const showContent = !isLoading && !isError && circles.length > 0;
 
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-10 text-white lg:px-10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10">
-        <header className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-cyan-200">Command center</p>
-            <h1 className="mt-2 text-4xl font-semibold">Your savings circles</h1>
+    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.15),_transparent_55%)]" />
+      <motion.nav
+        className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-md"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-emerald-400">
+              <Zap className="h-5 w-5 text-slate-950" />
+            </div>
+            <span className="text-lg font-bold text-white">Ajo</span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <AppKitButton />
           </div>
-          <div className="flex flex-wrap gap-3">
-            <ActionButton label="Create circle" onClick={() => setShowCreateDialog(true)} />
-            <ActionButton label="Invite member" />
-          </div>
-        </header>
+        </div>
+      </motion.nav>
+      <main className="relative z-10 min-h-screen px-6 py-10 lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-10">
+          <motion.header
+            className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-cyan-200">Command center</p>
+              <h1 className="mt-2 text-4xl font-semibold">Your savings circles</h1>
+              <p className="mt-2 text-sm text-slate-400">Create, manage, and track your group savings</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <ActionButton label="Create circle" onClick={() => setShowCreateDialog(true)} />
+              <ActionButton label="Invite member" />
+            </div>
+          </motion.header>
 
-        <SummaryGrid metrics={summaryMetrics} />
+          <SummaryGrid metrics={summaryMetrics} />
 
-        {isLoading && (
-          <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-10 text-center text-slate-300">
-            <p className="text-lg font-medium">Fetching your circles…</p>
-            <p className="mt-2 text-sm text-slate-500">Were reading data from the deployed factory.</p>
-          </div>
-        )}
+          {isLoading && (
+            <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-10 text-center text-slate-300">
+              <p className="text-lg font-medium">Fetching your circles…</p>
+              <p className="mt-2 text-sm text-slate-500">Were reading data from the deployed factory.</p>
+            </div>
+          )}
 
-        {isError && (
-          <div className="rounded-3xl border border-rose-400/40 bg-rose-500/10 p-6 text-sm text-rose-100">
-            <p className="font-semibold">Unable to load circles</p>
-            <p className="mt-1 text-rose-200/80">Please ensure the factory address env var is set, then try again.</p>
-            <button className="mt-3 rounded-full border border-rose-200/40 px-4 py-1 text-xs font-semibold" onClick={() => refetch()}>
-              Retry
-            </button>
-          </div>
-        )}
+          {isError && (
+            <div className="rounded-3xl border border-rose-400/40 bg-rose-500/10 p-6 text-sm text-rose-100">
+              <p className="font-semibold">Unable to load circles</p>
+              <p className="mt-1 text-rose-200/80">Please ensure the factory address env var is set, then try again.</p>
+              <button className="mt-3 rounded-full border border-rose-200/40 px-4 py-1 text-xs font-semibold" onClick={() => refetch()}>
+                Retry
+              </button>
+            </div>
+          )}
 
-        {showContent && <CircleBoard circles={circles} />}
+          {showContent && <CircleBoard circles={circles} />}
 
-        {!isLoading && !isError && circles.length === 0 && (
-          <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-10 text-center text-slate-300">
-            <p className="text-lg font-medium">No circles found yet</p>
-            <p className="mt-2 text-sm text-slate-500">Use the create flow to spin up your first savings circle.</p>
-          </div>
-        )}
+          {!isLoading && !isError && circles.length === 0 && (
+            <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-10 text-center text-slate-300">
+              <p className="text-lg font-medium">No circles found yet</p>
+              <p className="mt-2 text-sm text-slate-500">Use the create flow to spin up your first savings circle.</p>
+            </div>
+          )}
 
-        <section className="grid gap-6 lg:grid-cols-[0.6fr_0.4fr]">
-          <ContributionTable rows={contributions as ContributionEntry[]} />
-          <ActivityTimeline items={activities as ActivityItem[]} />
-        </section>
-      </div>
-      <CreateCircleDialog
-        open={showCreateDialog}
-        onClose={() => setShowCreateDialog(false)}
-        onCreated={() => refetch()}
-      />
-    </main>
+          <section className="grid gap-6 lg:grid-cols-[0.6fr_0.4fr]">
+            <ContributionTable rows={contributions as ContributionEntry[]} />
+            <ActivityTimeline items={activities as ActivityItem[]} />
+          </section>
+        </div>
+        <CreateCircleDialog
+          open={showCreateDialog}
+          onClose={() => setShowCreateDialog(false)}
+          onCreated={() => refetch()}
+        />
+      </main>
+    </div>
   );
 }

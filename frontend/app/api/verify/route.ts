@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { SelfBackendVerifier, AllIds, DefaultConfigStore, Country3LetterCode } from "@selfxyz/core";
+import { SelfBackendVerifier, AllIds, DefaultConfigStore } from "@selfxyz/core";
+
+// Country codes are 3-letter ISO strings (matching Self SDK's internal type)
+type Country3LetterCode = string;
 
 // Reuse a single verifier instance
 // Note: mockPassport: true = testnet/staging, false = mainnet

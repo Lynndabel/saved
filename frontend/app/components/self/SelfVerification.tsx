@@ -141,7 +141,7 @@ export function SelfVerification({ onSuccess, onError, onClose }: SelfVerificati
           </p>
           {(apiEndpoint.includes("playground") || apiEndpoint.includes("ngrok")) && (
             <p className="mt-2 text-xs text-amber-300">
-              ⚠️ Using testnet/staging endpoint - use mock passports for testing
+              Using testnet/staging endpoint - use mock passports for testing
             </p>
           )}
         </div>

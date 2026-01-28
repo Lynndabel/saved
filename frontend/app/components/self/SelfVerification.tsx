@@ -57,7 +57,6 @@ export function SelfVerification({ onSuccess, onError, onClose }: SelfVerificati
         endpoint: apiEndpoint,
         logoBase64: "https://i.postimg.cc/mrmVf9hm/self.png",
         userId: userId,
-        // Use "staging_https" for backend verification (not "celo" or "https" for mainnet)
         // This ensures Self uses backend verification instead of onchain
         endpointType: endpointType,
         userIdType: "hex",
